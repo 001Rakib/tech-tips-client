@@ -13,17 +13,17 @@ import clsx from "clsx";
 
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
+import Link from "next/link";
 
 export const Navbar = () => {
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
-      <NavbarContent className="basis-1/5 sm:basis-full">
-        <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
-            <p className="font-bold text-inherit">NextGenTechTips</p>
-          </NextLink>
-        </NavbarBrand>
-        <ul className="hidden lg:flex gap-4  ml-2">
+      <NextLink className="flex justify-start items-center gap-1" href="/">
+        <p className="font-bold text-inherit">NextGenTechTips</p>
+      </NextLink>
+      <NavbarContent justify="center" className="basis-1/5 sm:basis-full">
+        <NavbarBrand as="li" className="gap-3 max-w-fit"></NavbarBrand>
+        <ul className="hidden lg:flex gap-4 lg:justify-center lg:items-center ml-2">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <NextLink
@@ -50,7 +50,10 @@ export const Navbar = () => {
         </NavbarItem>
 
         <NavbarItem className="hidden md:flex">
-          <Button>Login</Button>
+          <Link href={"/login"}>
+            {" "}
+            <Button>Login</Button>
+          </Link>
         </NavbarItem>
       </NavbarContent>
 
