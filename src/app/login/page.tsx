@@ -1,5 +1,6 @@
 "use client";
 
+import { useUserLogin } from "@/src/hooks/auth.hook";
 import { Button } from "@nextui-org/button";
 import { Divider } from "@nextui-org/divider";
 import { Input } from "@nextui-org/input";
@@ -8,9 +9,10 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
+  const { mutate: handleUserLogin } = useUserLogin();
 
-  const handleLogin: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const handleLogin: SubmitHandler<FieldValues> = async (data) => {
+    await handleUserLogin(data);
   };
 
   return (
