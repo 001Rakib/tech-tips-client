@@ -1,5 +1,6 @@
 "use client";
 
+import { useUserSignup } from "@/src/hooks/auth.hook";
 import { uploadImage } from "@/src/utils/uploadImage";
 import { Button } from "@nextui-org/button";
 import { Divider } from "@nextui-org/divider";
@@ -9,6 +10,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
+  const { mutate: handleUserSignup } = useUserSignup();
 
   const handleLogin: SubmitHandler<FieldValues> = async (data) => {
     const profileUrl = await uploadImage(data.profilePicture[0]);
@@ -17,7 +19,7 @@ const Register = () => {
       ...data,
       profilePicture: profileUrl.data.url,
     };
-    console.log(userData);
+    handleUserSignup(userData);
   };
 
   return (
