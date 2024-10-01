@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadImage } from "@/src/utils/uploadImage";
 import { Button } from "@nextui-org/button";
 import { Divider } from "@nextui-org/divider";
 import { Input } from "@nextui-org/input";
@@ -9,8 +10,14 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 const Register = () => {
   const { register, handleSubmit } = useForm();
 
-  const handleLogin: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const handleLogin: SubmitHandler<FieldValues> = async (data) => {
+    const profileUrl = await uploadImage(data.profilePicture[0]);
+
+    const userData = {
+      ...data,
+      profilePicture: profileUrl.data.url,
+    };
+    console.log(userData);
   };
 
   return (
@@ -43,6 +50,13 @@ const Register = () => {
             errorMessage="Incorrect password"
             {...register("password")}
           />
+
+          <input
+            className="block"
+            type="file"
+            {...register("profilePicture")}
+          />
+
           <Button
             className="mt-4"
             color="primary"
