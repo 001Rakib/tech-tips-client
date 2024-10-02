@@ -1,3 +1,4 @@
+"use client";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -14,8 +15,12 @@ import clsx from "clsx";
 import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
 import Link from "next/link";
+import { useUser } from "@/src/context/user.provider";
+import NavbarAvatar from "./NavbarAvatar";
 
 export const Navbar = () => {
+  const { user } = useUser();
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NextLink className="flex justify-start items-center gap-1" href="/">
@@ -49,12 +54,18 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
 
-        <NavbarItem className="hidden md:flex">
-          <Link href={"/login"}>
-            {" "}
-            <Button>Login</Button>
-          </Link>
-        </NavbarItem>
+        {user?.email ? (
+          <NavbarItem className="hidden sm:flex gap-2">
+            <NavbarAvatar />
+          </NavbarItem>
+        ) : (
+          <NavbarItem className="hidden md:flex">
+            <Link href={"/login"}>
+              {" "}
+              <Button>Login</Button>
+            </Link>
+          </NavbarItem>
+        )}
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">

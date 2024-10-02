@@ -1,19 +1,37 @@
 "use client";
 
+import { useUser } from "@/src/context/user.provider";
 import { useUserLogin } from "@/src/hooks/auth.hook";
 import { Button } from "@nextui-org/button";
 import { Divider } from "@nextui-org/divider";
 import { Input } from "@nextui-org/input";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 const Login = () => {
+  const searchParams = useSearchParams();
   const { register, handleSubmit } = useForm();
-  const { mutate: handleUserLogin } = useUserLogin();
+  const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
+  const router = useRouter();
+  const redirect = searchParams.get("redirect");
+  const { setIsLoading } = useUser();
 
   const handleLogin: SubmitHandler<FieldValues> = async (data) => {
     await handleUserLogin(data);
+    setIsLoading(true);
   };
+
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        router.push("/");
+      }
+    }
+  }, [isPending, isSuccess]);
 
   return (
     <div className="grid items-center justify-center my-20 max-w-screen-xl  mx-auto text-center">
