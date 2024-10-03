@@ -23,3 +23,16 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
 }
+export interface IPost {
+  _id: string;
+  title: string;
+  description: string;
+  author: string;
+  image: string;
+  category: string;
+  status: string;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
