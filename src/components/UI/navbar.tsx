@@ -17,6 +17,7 @@ import { ThemeSwitch } from "@/src/components/theme-switch";
 import Link from "next/link";
 import { useUser } from "@/src/context/user.provider";
 import NavbarAvatar from "./NavbarAvatar";
+import CreatePostModal from "../modules/Home/CreatePostModal";
 
 export const Navbar = () => {
   const { user } = useUser();
@@ -44,6 +45,9 @@ export const Navbar = () => {
             </NavbarItem>
           ))}
         </ul>
+        <NavbarItem className="hidden sm:flex gap-2">
+          <ThemeSwitch />
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent
@@ -51,7 +55,7 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <ThemeSwitch />
+          <CreatePostModal />
         </NavbarItem>
 
         {user?.email ? (
