@@ -17,6 +17,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { uploadImage } from "@/src/utils/uploadImage";
 import { useCreatePost } from "@/src/hooks/post.hook";
 import { useUser } from "@/src/context/user.provider";
+import { Select, SelectItem } from "@nextui-org/select";
+import { categoryField, statusField } from "@/src/constant";
 
 const QuillEditor = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -108,6 +110,7 @@ export default function CreatePostModal() {
       description: content,
       image: imageUrl.data.url,
       author: user?.name,
+      authorImage: user?.profilePicture,
     };
     const res = await createPost(postData);
     console.log(res);
@@ -124,7 +127,7 @@ export default function CreatePostModal() {
         Create Post
       </Button>
       <Modal
-        size="5xl"
+        size="full"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="top-center"
@@ -146,35 +149,45 @@ export default function CreatePostModal() {
                       className="w-full mb-2"
                       {...register("title")}
                     />
-                    <Input
-                      isRequired
-                      type="text"
-                      label="Category"
-                      className="w-full mb-2"
-                      {...register("category")}
-                    />
-                    <Input
-                      isRequired
-                      type="text"
-                      label="Status"
-                      className="w-full mb-2"
-                      {...register("status")}
-                    />
+
+                    <div className="flex gap-5">
+                      <Select
+                        label="Category"
+                        placeholder="Select Category"
+                        className=""
+                        {...register("category")}
+                      >
+                        {categoryField.map((item) => (
+                          <SelectItem key={item.key}>{item.label}</SelectItem>
+                        ))}
+                      </Select>
+                      <Select
+                        label="Post Status"
+                        placeholder="Select Post Status"
+                        className=""
+                        {...register("status")}
+                      >
+                        {statusField.map((item) => (
+                          <SelectItem key={item.key}>{item.label}</SelectItem>
+                        ))}
+                      </Select>
+                    </div>
                     <label htmlFor="image">Upload Image</label>
                     <input
-                      className="block"
+                      className="block mb-2"
                       type="file"
                       id="image"
                       {...register("image")}
                     />
 
                     <div className="h-full">
+                      <label>Description</label>
                       <QuillEditor
                         value={content}
                         onChange={handleEditorChange}
                         modules={quillModules}
                         formats={quillFormats}
-                        className="w-full h-[70%] mt-10 bg-white"
+                        className="w-full h-[70%]  bg-white"
                       />
                     </div>
                   </div>
@@ -183,7 +196,7 @@ export default function CreatePostModal() {
                   <Button color="danger" variant="flat" onPress={onClose}>
                     Discard Post
                   </Button>
-                  <Button type="submit" color="primary">
+                  <Button type="submit" color="primary" onPress={onClose}>
                     Post
                   </Button>
                 </ModalFooter>

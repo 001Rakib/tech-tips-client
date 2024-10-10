@@ -28,6 +28,7 @@ export interface IPost {
   title: string;
   description: string;
   author: string;
+  authorImage: string;
   image: string;
   category: string;
   status: string;
